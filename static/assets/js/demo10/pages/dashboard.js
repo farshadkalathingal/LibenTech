@@ -96,21 +96,41 @@ var KTDashboard = function() {
 
     // Daily Sales chart.
     // Based on Chartjs plugin - http://www.chartjs.org/
+
+    var data = JSON.parse(mydata.replace(/&quot;/g,'"'));
+    var i;
+    var len = data['length']
+    var id = 0;
+    //console.log( data[0]['fields']['name']);
+    var labels = [];
+    var bars = [];
+    var allocated = [];
+    var available = [];
+    var paid = [];
+    var open = [];
+    for (i=0; i<len; i++) {
+        labels.push(data[i]['fields']['name']);
+        bars.push(data[i]['fields']['bar_value']);
+        allocated.push(data[i]['fields']['d_allocated']);
+        available.push(data[i]['fields']['d_available']);
+        paid.push(data[i]['fields']['f_paid']);
+        open.push(data[i]['fields']['f_open']);
+    }
+ 
     var dailySales = function() {
         var chartContainer = KTUtil.getByID('kt_chart_daily_sales');
 
         if (!chartContainer) {
             return;
         }
-
+        
         var chartData = {
-            labels: ["Outubro", "Novembro", "Dezembro", "Janeiro", "Fevereiro", "Merço", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro", "Janeiro"],
+            
+            labels: labels,
             datasets: [{
                 //label: 'Dataset 1',
                 backgroundColor: KTApp.getStateColor('success'),
-                data: [
-                    15, 20, 25, 30, 25, 20, 15, 20, 25, 30, 25, 20, 15, 10, 15, 20
-                ]
+                data: bars
             }]
         };
 
@@ -153,17 +173,36 @@ var KTDashboard = function() {
                         top: 0,
                         bottom: 0
                     }
-                }
+                },
+                onClick: handleClick
             }
         });
+        function handleClick(evt)
+        {
+            var activeElement = chart.getElementAtEvent(evt);
+            //console.log(activeElement[0]['_index']);
+            id = activeElement[0]['_index'];
+            profitShare(allocated[id], available[id]);
+            faturamento(paid[id], open[id]);
+        }
     }
 
     // Profit Share Chart.
     // Based on Chartjs plugin - http://www.chartjs.org/
-    var profitShare = function() {        
+    var profitShare = function(all, ava) {        
         if (!KTUtil.getByID('kt_chart_profit_share')) {
             return;
         }
+        if (all == null ) {
+            all = allocated[0]
+        }
+        if (ava == null) {
+            ava = available[0]
+        }
+
+        $("#d_allo").text(all+'%');
+        $("#d_allocated").text(all+'% Alocados');
+        $("#d_available").text(ava+'% Disponíveis');
 
         var randomScalingFactor = function() {
             return Math.round(Math.random() * 100);
@@ -174,7 +213,7 @@ var KTDashboard = function() {
             data: {
                 datasets: [{
                     data: [
-                        80, 20
+                        all, ava
                     ],
                     backgroundColor: [
                         KTApp.getStateColor('success'),
@@ -226,10 +265,20 @@ var KTDashboard = function() {
 
     // Profit Share Chart.
     // Based on Chartjs plugin - http://www.chartjs.org/
-    var faturamento = function() {        
+    var faturamento = function(p, o) {        
         if (!KTUtil.getByID('kt_chart_faturamento')) {
             return;
         }
+        if (p == null ) {
+            p = paid[0]
+        }
+        if (o == null) {
+            o = open[0]
+        }
+
+        $("#paid").text(p+'%');
+        $("#f_paid").text(p+'% Pago');
+        $("#f_open").text(o+'% Em Aberto');
 
         var randomScalingFactor = function() {
             return Math.round(Math.random() * 100);
@@ -240,7 +289,7 @@ var KTDashboard = function() {
             data: {
                 datasets: [{
                     data: [
-                        96, 4
+                        p, o
                     ],
                     backgroundColor: [
                         KTApp.getStateColor('success'),

@@ -807,6 +807,7 @@ License: You must have a valid license purchased only from themeforest(the above
 													<div class="kt-widget14__chart" style="height:120px;">
 														<canvas id="kt_chart_daily_sales"></canvas>
 													</div>
+												
 												</div>
 											</div>
 
@@ -827,17 +828,17 @@ License: You must have a valid license purchased only from themeforest(the above
 													</div>
 													<div class="kt-widget14__content">
 														<div class="kt-widget14__chart">
-															<div class="kt-widget14__stat">85%</div>
+															<div class="kt-widget14__stat" id="d_allo"></div>
 															<canvas id="kt_chart_profit_share" style="height: 140px; width: 140px;"></canvas>
 														</div>
 														<div class="kt-widget14__legends">
 															<div class="kt-widget14__legend">
 																<span class="kt-widget14__bullet kt-bg-success"></span>
-																<span class="kt-widget14__stats">85% Alocados</span>
+																<span class="kt-widget14__stats" id="d_allocated"></span>
 															</div>
 															<div class="kt-widget14__legend">
 																<span class="kt-widget14__bullet kt-bg-danger"></span>
-																<span class="kt-widget14__stats">15% Disponíveis</span>
+																<span class="kt-widget14__stats" id="d_available"></span>
 															</div>
 														</div>
 													</div>
@@ -861,17 +862,17 @@ License: You must have a valid license purchased only from themeforest(the above
 													</div>
 													<div class="kt-widget14__content">
 														<div class="kt-widget14__chart">
-															<div class="kt-widget14__stat">96%</div>
+															<div class="kt-widget14__stat" id="paid"></div>
 															<canvas id="kt_chart_faturamento" style="height: 140px; width: 140px;"></canvas>
 														</div>
 														<div class="kt-widget14__legends">
 															<div class="kt-widget14__legend">
 																<span class="kt-widget14__bullet kt-bg-success"></span>
-																<span class="kt-widget14__stats">96% Pago</span>
+																<span class="kt-widget14__stats" id="f_paid"></span>
 															</div>
 															<div class="kt-widget14__legend">
 																<span class="kt-widget14__bullet kt-bg-danger"></span>
-																<span class="kt-widget14__stats">4% Em Aberto</span>
+																<span class="kt-widget14__stats" id="f_open"></span>
 															</div>
 														</div>
 													</div>
@@ -1793,6 +1794,9 @@ License: You must have a valid license purchased only from themeforest(the above
 
 		<!-- end::Global Config -->
 
+		<script>
+			const mydata = "{{ data }}";
+		</script>
 		<!--begin:: Global Mandatory Vendors -->
 		<script src="{% static 'assets/vendors/general/jquery/dist/jquery.js' %}" type="text/javascript"></script>
 		<script src="{% static 'assets/vendors/general/popper.js/dist/umd/popper.js' %}" type="text/javascript"></script>

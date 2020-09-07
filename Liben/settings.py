@@ -77,13 +77,13 @@ DATABASES = {
     'default' : {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': 'liben',
+        'NAME': config('NAME'),
 
-        'USER': 'postgres',
+        'USER': config('USER'),
 
-        'PASSWORD': '1235',
+        'PASSWORD': config('PASSWORD'),
 
-        'HOST': '127.0.0.1',
+        'HOST': config('HOST'),
     }
 }
 
